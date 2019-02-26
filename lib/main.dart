@@ -5,15 +5,12 @@ import 'package:flutter/cupertino.dart';
 void main() => runApp(FriendlyChat());
 
 final ThemeData kDefaultTheme = ThemeData(
-  primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400]
-);
+    primarySwatch: Colors.purple, accentColor: Colors.orangeAccent[400]);
 
 final ThemeData kIOSTheme = ThemeData(
-  primarySwatch: Colors.orange,
-  primaryColor: Colors.grey[100],
-  primaryColorBrightness: Brightness.light
-);
+    primarySwatch: Colors.orange,
+    primaryColor: Colors.grey[100],
+    primaryColorBrightness: Brightness.light);
 
 const String _name = 'Flavio Franco';
 
@@ -22,7 +19,9 @@ class FriendlyChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Friendly Chat',
-      theme: defaultTargetPlatform == TargetPlatform.iOS ? kIOSTheme : kDefaultTheme,
+      theme: defaultTargetPlatform == TargetPlatform.iOS
+          ? kIOSTheme
+          : kDefaultTheme,
       home: ChatScreen(),
     );
   }
@@ -34,9 +33,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-
   final List<ChatMessage> _messages = <ChatMessage>[];
-  final TextEditingController _textEditingController = new TextEditingController();
+  final TextEditingController _textEditingController =
+      new TextEditingController();
   bool _isComposing = false;
 
   Widget _buildTextComposer() {
@@ -47,30 +46,31 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         child: Row(
           children: <Widget>[
             Flexible(
-              child: TextField(
-                controller: _textEditingController,
-                onChanged: (String text) {
-                  setState(() {
-                    _isComposing = text.trim().length > 0;
-                  });
-                },
-                onSubmitted: _handleSubmitted,
-                decoration: InputDecoration.collapsed(
-                    hintText: 'Send a message'
-                ),
-              )
-            ),
+                child: TextField(
+              controller: _textEditingController,
+              onChanged: (String text) {
+                setState(() {
+                  _isComposing = text.trim().length > 0;
+                });
+              },
+              onSubmitted: _handleSubmitted,
+              decoration: InputDecoration.collapsed(hintText: 'Send a message'),
+            )),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: Theme.of(context).platform == TargetPlatform.iOS
                   ? CupertinoButton(
-                    child: Text('Send'),
-                    onPressed: _isComposing ? () => _handleSubmitted(_textEditingController.text.trim()) : null
-                  )
+                      child: Text('Send'),
+                      onPressed: _isComposing
+                          ? () => _handleSubmitted(
+                              _textEditingController.text.trim())
+                          : null)
                   : IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: _isComposing ? () => _handleSubmitted(_textEditingController.text.trim()) : null
-                  ),
+                      icon: Icon(Icons.send),
+                      onPressed: _isComposing
+                          ? () => _handleSubmitted(
+                              _textEditingController.text.trim())
+                          : null),
             )
           ],
         ),
@@ -88,9 +88,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     ChatMessage message = ChatMessage(
       text: text,
       animationController: AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: 350)
-      ),
+          vsync: this, duration: Duration(milliseconds: 350)),
     );
 
     setState(() {
@@ -117,10 +115,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     itemCount: _messages.length,
                     itemBuilder: (_, int index) {
                       return _messages[index];
-                    }
-                )
+                    })),
+            Divider(
+              height: 1.0,
             ),
-            Divider(height: 1.0,),
             Container(
               decoration: BoxDecoration(color: Theme.of(context).cardColor),
               child: _buildTextComposer(),
@@ -128,12 +126,11 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           ],
         ),
         decoration: Theme.of(context).platform == TargetPlatform.iOS
-          ? BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Colors.grey[200]),
-            )
-          )
-          : null,
+            ? BoxDecoration(
+                border: Border(
+                top: BorderSide(color: Colors.grey[200]),
+              ))
+            : null,
       ),
     );
   }
@@ -148,7 +145,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 }
 
 class ChatMessage extends StatelessWidget {
-
   final String text;
   final AnimationController animationController;
 
@@ -157,10 +153,8 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizeTransition(
-      sizeFactor: CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeOut
-      ),
+      sizeFactor:
+          CurvedAnimation(parent: animationController, curve: Curves.easeOut),
       axisAlignment: 0.0,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -169,25 +163,27 @@ class ChatMessage extends StatelessWidget {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(child: Text(_name[0]),),
+              child: CircleAvatar(
+                child: Text(_name[0]),
+              ),
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(_name, style: Theme.of(context).textTheme.subhead,),
-                  Container(
-                    margin: EdgeInsets.only(top: 5.0),
-                    child: Text(text),
-                  )
-                ],
-              )
-            )
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  _name,
+                  style: Theme.of(context).textTheme.subhead,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.0),
+                  child: Text(text),
+                )
+              ],
+            ))
           ],
         ),
       ),
     );
   }
 }
-
-
